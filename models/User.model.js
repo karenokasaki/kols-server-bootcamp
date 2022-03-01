@@ -21,8 +21,7 @@ const UserSchema = new Schema({
     unique: true,
     trim: true,
     lowercase: true,
-    match:
-      /^(([^<>()[]\.,;:\s@"]+(.[^<>()[]\.,;:\s@"]+)*)|(".+"))@(([[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}])|(([a-zA-Z-0-9]+.)+[a-zA-Z]{2,}))$/,
+    match: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
   },
   birthdate: { type: Date, required: true },
   cpf: {
