@@ -2,6 +2,17 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
+<<<<<<< HEAD
+    name: { type: String, required: true, trim: true },
+    lastName: { type: String, required: true, trim: true },
+    email: {
+        type: String,
+        required: true,
+        unique: true,
+        trim: true,
+        lowercase: true,
+        match: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+=======
   name: { type: String, required: true, trim: true },
   lastName: { type: String, required: true, trim: true },
   email: {
@@ -72,6 +83,7 @@ const UserSchema = new Schema({
       type: Number,
       required: true,
       match: /^([\d]{2}).?([\d]{3})-?([\d]{3})/,
+>>>>>>> 50f15bfe0162928bd7c48f2ba9ef97cf7540689c
     },
     state: {
       type: String,
