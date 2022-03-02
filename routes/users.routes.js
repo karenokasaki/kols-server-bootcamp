@@ -45,7 +45,7 @@ router.post("/create-user", async (req, res) => {
     delete newUser._doc.__v;
 
     // retorna success para criação de um novo usuário
-    return res.status(200).json(newUser._doc);
+    return res.status(201).json(newUser._doc);
   } catch (error) {
     // retorna Internal Server Error
     return res.status(500).json({ msg: error.message });
@@ -96,7 +96,7 @@ router.post("/login", async (req, res) => {
 });
 
 // Rota para buscar usuário
-router.get("/profile", isAuth, attachCurrentUser, (req, res) => {
+router.get("/profile", isAuth, attachCurrentUser, async (req, res) => {
   try {
     const loggedInUser = req.currentUser;
 
@@ -107,8 +107,11 @@ router.get("/profile", isAuth, attachCurrentUser, (req, res) => {
 
     // Verificar se o usuário está logado
     if (loggedInUser) {
+
+      const populateUser = await userModel.findById(loggedInUser._id).populate('business')
+
       // Retorna success quando o usuário esta logado
-      return res.status(200).json(loggedInUser);
+      return res.status(200).json(populateUser);
     } else {
       // Retorna Not Found
       return res.status(404).json({ msg: "User not found." });
