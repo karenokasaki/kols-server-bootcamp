@@ -98,18 +98,22 @@ router.post("/login", async (req, res) => {
 // Rota para buscar usuário
 router.get("/profile", isAuth, attachCurrentUser, async (req, res) => {
   try {
-    const loggedInUser = req.currentUser;
+    const loggedUser = req.currentUser;
 
     // Verifica se a conta do usuário está ativa.
-    if (!loggedInUser.isActive) {
+    if (!loggedUser.userIsActive) {
       return res.status(404).json({ msg: "User disable account." });
     }
 
     // Verificar se o usuário está logado
-    if (loggedInUser) {
+    if (loggedUser) {
       const populateUser = await userModel
-        .findById(loggedInUser._id)
+        .findById(loggedUser._id)
         .populate("business");
+
+      // Deleta o password e a versão no retorno da atualização
+      delete populateUser._doc.passwordHash;
+      delete populateUser._doc.__v;
 
       // Retorna success quando o usuário esta logado
       return res.status(200).json(populateUser);
@@ -127,10 +131,15 @@ router.get("/profile", isAuth, attachCurrentUser, async (req, res) => {
 // Verifica se o usuário esta logado para fazer a atualização através do ID
 router.patch("/profile/update", isAuth, attachCurrentUser, async (req, res) => {
   try {
-    const loggedInUser = req.currentUser;
+    const loggedUser = req.currentUser;
+
+    // Verifica se a conta do usuário está ativa.
+    if (!loggedUser.userIsActive) {
+      return res.status(404).json({ msg: "User disable account." });
+    }
 
     const updateUser = await userModel.findOneAndUpdate(
-      { _id: loggedInUser._id },
+      { _id: loggedUser._id },
       { ...req.body },
       { new: true, runValidators: true }
     );
@@ -148,50 +157,50 @@ router.patch("/profile/update", isAuth, attachCurrentUser, async (req, res) => {
 // Rota para um soft delete do usuário
 // Verifica se o usuário esta logado, identifica o ID e "deleta" do banco de dados.
 router.delete(
-  "/disable-account",
+  "/profile/disable-account",
   isAuth,
   attachCurrentUser,
   async (req, res) => {
     try {
-      const loggedInUser = req.currentUser;
+      const loggedUser = req.currentUser;
 
-      const deletedUser = await userModel.findOneAndUpdate(
-        { _id: loggedInUser._id },
-        { isActive: false },
+      const disableUser = await userModel.findOneAndUpdate(
+        { _id: loggedUser._id },
+        { userIsActive: false },
         { new: true }
       );
 
       // Deleta o password e a versão no retorno da atualização
-      delete deletedUser._doc.passwordHash;
-      delete deletedUser._doc.__v;
+      delete disableUser._doc.passwordHash;
+      delete disableUser._doc.__v;
 
-      return res.status(200).json(deletedUser);
+      return res.status(200).json(disableUser);
     } catch (error) {
       return res.status(500).json({ msg: error.message });
     }
   }
 );
 
-// Active account
+// Rota active account
 router.patch(
   "/profile/active-account",
   isAuth,
   attachCurrentUser,
   async (req, res) => {
     try {
-      const loggedInUser = req.currentUser;
+      const loggedUser = req.currentUser;
 
-      const updateUser = await userModel.findOneAndUpdate(
-        { _id: loggedInUser._id },
-        { isActive: true },
+      const activeUser = await userModel.findOneAndUpdate(
+        { _id: loggedUser._id },
+        { userIsActive: true },
         { new: true, runValidators: true }
       );
 
       // Deleta o password e a versão no retorno da atualização
-      delete updateUser._doc.passwordHash;
-      delete updateUser._doc.__v;
+      delete activeUser._doc.passwordHash;
+      delete activeUser._doc.__v;
 
-      return res.status(200).json(updateUser);
+      return res.status(200).json(activeUser);
     } catch (error) {
       return res.status(500).json({ msg: error.message });
     }

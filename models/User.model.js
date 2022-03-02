@@ -10,8 +10,7 @@ const UserSchema = new Schema({
     unique: true,
     trim: true,
     lowercase: true,
-    match:
-      /^(([^<>()[]\.,;:\s@"]+(.[^<>()[]\.,;:\s@"]+)*)|(".+"))@(([[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}])|(([a-zA-Z-0-9]+.)+[a-zA-Z]{2,}))$/,
+    match: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
   },
   birthdate: { type: Date, required: true },
   cpf: {
@@ -27,7 +26,7 @@ const UserSchema = new Schema({
   },
   rgUF: {
     type: String,
-    emun: [
+    enum: [
       "AC",
       "AL",
       "AP",
@@ -76,7 +75,7 @@ const UserSchema = new Schema({
     state: {
       type: String,
       required: true,
-      emun: [
+      enum: [
         "AC",
         "AL",
         "AP",
@@ -112,10 +111,10 @@ const UserSchema = new Schema({
 
   passwordHash: { type: String /* required: true */ },
 
-  onwership: { type: mongoose.Schema.Types.ObjectId, ref: "Business" },
+  ownership: { type: mongoose.Schema.Types.ObjectId, ref: "Business" },
   employee: { type: mongoose.Schema.Types.ObjectId, ref: "Business" },
   createDate: { type: Date, required: true, default: Date.now },
-  isActive: { type: Boolean, default: true },
+  userIsActive: { type: Boolean, default: true },
 
   role: {
     type: String,

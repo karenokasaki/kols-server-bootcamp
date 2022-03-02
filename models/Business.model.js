@@ -39,7 +39,7 @@ const BusinessSchema = new Schema({
     state: {
       type: String,
       required: true,
-      emun: [
+      enum: [
         "AC",
         "AL",
         "AP",
@@ -71,11 +71,13 @@ const BusinessSchema = new Schema({
     },
   }),
 
-  onwer: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  owner: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
 
   employee: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
 
   products: [{ type: mongoose.Schema.Types.ObjectId, ref: "Products" }],
+
+  businessIsActive: { type: Boolean, default: true },
 });
 
 const BusinessModel = mongoose.model("Business", BusinessSchema);
