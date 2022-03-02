@@ -1,22 +1,8 @@
 //importar o express
-const express = require("express")
+const express = require("express");
 // instancionar as rotas pegando do express
-const router = express.Router()
+const router = express.Router();
 
-const ProductsModel = require('../models/Products.model')
+const ProductsModel = require("../models/Products.model");
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-module.exports = router
+module.exports = router;

@@ -107,8 +107,9 @@ router.get("/profile", isAuth, attachCurrentUser, async (req, res) => {
 
     // Verificar se o usuário está logado
     if (loggedInUser) {
-
-      const populateUser = await userModel.findById(loggedInUser._id).populate('business')
+      const populateUser = await userModel
+        .findById(loggedInUser._id)
+        .populate("business");
 
       // Retorna success quando o usuário esta logado
       return res.status(200).json(populateUser);
