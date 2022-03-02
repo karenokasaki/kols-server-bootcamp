@@ -100,6 +100,7 @@ router.get("/profile", isAuth, attachCurrentUser, (req, res) => {
   try {
     const loggedInUser = req.currentUser;
 
+    // Verifica se a conta do usuário está ativa.
     if (!loggedInUser.isActive) {
       return res.status(404).json({ msg: "User disable account." });
     }
@@ -161,6 +162,32 @@ router.delete(
       delete deletedUser._doc.__v;
 
       return res.status(200).json(deletedUser);
+    } catch (error) {
+      return res.status(500).json({ msg: error.message });
+    }
+  }
+);
+
+// Active account
+router.patch(
+  "/profile/active-account",
+  isAuth,
+  attachCurrentUser,
+  async (req, res) => {
+    try {
+      const loggedInUser = req.currentUser;
+
+      const updateUser = await userModel.findOneAndUpdate(
+        { _id: loggedInUser._id },
+        { isActive: true },
+        { new: true, runValidators: true }
+      );
+
+      // Deleta o password e a versão no retorno da atualização
+      delete updateUser._doc.passwordHash;
+      delete updateUser._doc.__v;
+
+      return res.status(200).json(updateUser);
     } catch (error) {
       return res.status(500).json({ msg: error.message });
     }
