@@ -5,12 +5,12 @@ const BusinessSchema = new Schema({
   corporateName: { type: String, required: true },
   name: { type: String, required: true },
   cnpj: {
-    type: Number,
+    type: String,
     match: /^\d{2}.\d{3}.\d{3}\/\d{4}-\d{2}$/,
     required: true,
   },
-  ie: { type: Number, match: /^\d{3}.\d{3}.\d{3}.\d{3}$/ },
-  im: { type: Number, match: /^\d{7}\/\d{3}?-\d{1}$/ },
+  ie: { type: String, match: /^\d{3}.\d{3}.\d{3}.\d{3}$/ },
+  im: { type: String, match: /^\d{7}\/\d{3}?-\d{1}$/ },
   email: {
     type: String,
     required: true,
