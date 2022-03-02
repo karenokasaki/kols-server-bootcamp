@@ -11,6 +11,7 @@ const bcrypt = require("bcrypt");
 const generateToken = require("../config/jwt.config");
 
 const userModel = require("../models/User.model");
+const { restart } = require("nodemon");
 
 const saltRounds = 10;
 
@@ -39,8 +40,9 @@ router.post("/create-user", async (req, res) => {
       ...req.body,
       passwordHash: hashedPassword,
     });
-
+    // Deleta o password e a versão no retorno da atualização
     delete newUser._doc.passwordHash;
+    delete newUser._doc.__v;
 
     // retorna success para criação de um novo usuário
     return res.status(200).json(newUser._doc);
@@ -96,9 +98,11 @@ router.post("/login", async (req, res) => {
 // Rota para buscar usuário
 router.get("/profile", isAuth, attachCurrentUser, (req, res) => {
   try {
-    console.log(req.headers);
-
     const loggedInUser = req.currentUser;
+
+    if (!loggedInUser.isActive) {
+      return res.status(404).json({ msg: "User disable account." });
+    }
 
     // Verificar se o usuário está logado
     if (loggedInUser) {
@@ -113,5 +117,54 @@ router.get("/profile", isAuth, attachCurrentUser, (req, res) => {
     return res.status(500).json({ msg: error.message });
   }
 });
+
+// Rota de atualização usuário
+// Verifica se o usuário esta logado para fazer a atualização através do ID
+router.patch("/profile/update", isAuth, attachCurrentUser, async (req, res) => {
+  try {
+    const loggedInUser = req.currentUser;
+
+    const updateUser = await userModel.findOneAndUpdate(
+      { _id: loggedInUser._id },
+      { ...req.body },
+      { new: true, runValidators: true }
+    );
+
+    // Deleta o password e a versão no retorno da atualização
+    delete updateUser._doc.passwordHash;
+    delete updateUser._doc.__v;
+
+    return res.status(200).json(updateUser);
+  } catch (error) {
+    return res.status(500).json({ msg: error.message });
+  }
+});
+
+// Rota para um soft delete do usuário
+// Verifica se o usuário esta logado, identifica o ID e "deleta" do banco de dados.
+router.delete(
+  "/disable-account",
+  isAuth,
+  attachCurrentUser,
+  async (req, res) => {
+    try {
+      const loggedInUser = req.currentUser;
+
+      const deletedUser = await userModel.findOneAndUpdate(
+        { _id: loggedInUser._id },
+        { isActive: false },
+        { new: true }
+      );
+
+      // Deleta o password e a versão no retorno da atualização
+      delete deletedUser._doc.passwordHash;
+      delete deletedUser._doc.__v;
+
+      return res.status(200).json(deletedUser);
+    } catch (error) {
+      return res.status(500).json({ msg: error.message });
+    }
+  }
+);
 
 module.exports = router;

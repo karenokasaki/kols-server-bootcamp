@@ -1,3 +1,8 @@
-// TODO => ROTAS BUSINESS
+//! APAGAR O ARQUIVO ASSIM QUE FINALIZADO
 
-// POST - CRIAR A EMPRESA
+// TODO: ROTAS USER
+//? É necessário criar uma forma de ativar a conta do usuário novamente?
+//? É preciso ser um usuário ativo para realizar o login?
+
+// TODO: ROTAS BUSINESS
+// TODO: ROTAS PRODUCTS
