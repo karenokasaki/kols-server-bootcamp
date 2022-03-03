@@ -68,7 +68,7 @@ router.get("/profile", isAuth, attachCurrentUser, async (req, res) => {
     delete business.owner._doc.__v;
     delete business._doc.__v;
 
-    return res.status(200).json(business);
+    return res.status(200).json(business).send('alguma coisa');
   } catch (error) {
     // retorna Internal Server Error
     return res.status(500).json({ msg: error.message });
