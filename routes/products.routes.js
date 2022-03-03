@@ -5,6 +5,7 @@ const router = express.Router();
 
 const ProductsModel = require("../models/Products.model");
 const BusinessModel = require("../models/Business.model");
+const LogModel = require("../models/LogModel.model");
 
 const isAuth = require("../middlewares/isAuth");
 const attachCurrentUser = require("../middlewares/attachCurrentUser");
@@ -144,6 +145,7 @@ router.delete("/delete/:id", isAuth, attachCurrentUser, async (req, res) => {
   }
 });
 
+//adiciona na quantidade do produto no BD
 router.patch('/input-product', isAuth, attachCurrentUser, async (req, res) => {
   try {
     const productSent = await ProductsModel.findById(req.body._id)
@@ -156,12 +158,14 @@ router.patch('/input-product', isAuth, attachCurrentUser, async (req, res) => {
   }
 })
 
+//subtrai na quantidade do produto no BD
 router.patch('/output-product', isAuth, attachCurrentUser, async (req, res) => {
   try {
     const productSent = await ProductsModel.findById(req.body._id)
 
+    //verifica se o estoque não vai ficar negativo depois da subtração
     if (productSent.quantity - req.body.quantity < 0) {
-      return res.status(500).json('Estoque indisponível')
+      return res.status(400).json('Estoque indisponível')
     }
 
     const productToUpdate = await ProductsModel.findOneAndUpdate({ _id: req.body._id }, { $set: { quantity: (productSent.quantity - req.body.quantity) } }, { new: true })
