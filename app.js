@@ -1,8 +1,11 @@
 require("dotenv").config();
 require("./config/db.config")();
+const cors = require("cors")
 const express = require("express");
 const app = express();
 app.use(express.json());
+app.use(cors({ origin: process.env.REACT_APP_URL }));
+
 
 const userRouter = require("./routes/users.routes");
 app.use("/users", userRouter);
