@@ -16,6 +16,6 @@ app.use("/business", businessRouter);
 const productsRouter = require("./routes/products.routes");
 app.use("/products", productsRouter);
 
-app.listen(Number(process.env.PORT), () => {
+app.listen(Number(process.env.PORT) || 3000, () => {
   console.log(`Server up and ruining at - port: ${process.env.PORT}`);
 });
