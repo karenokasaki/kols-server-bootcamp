@@ -11,7 +11,6 @@ const bcrypt = require("bcrypt");
 const generateToken = require("../config/jwt.config");
 
 const userModel = require("../models/User.model");
-const { restart } = require("nodemon");
 
 const saltRounds = 10;
 
