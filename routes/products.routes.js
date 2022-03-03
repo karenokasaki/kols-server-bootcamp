@@ -160,7 +160,11 @@ router.patch('/output-product', isAuth, attachCurrentUser, async (req, res) => {
   try {
     const productSent = await ProductsModel.findById(req.body._id)
 
-    const productToUpdate = await ProductsModel.findOneAndUpdate({ _id: req.body._id }, { $set: { quantity: (req.body.quantity - productSent.quantity) } }, { new: true })
+    if (productSent.quantity - req.body.quantity < 0) {
+      return res.status(500).json('Estoque indisponível')
+    }
+
+    const productToUpdate = await ProductsModel.findOneAndUpdate({ _id: req.body._id }, { $set: { quantity: (productSent.quantity - req.body.quantity) } }, { new: true })
 
     return res.status(200).json(productToUpdate)
   } catch (error) {
