@@ -47,7 +47,9 @@ router.post("/create-user", async (req, res) => {
     return res.status(201).json(newUser._doc);
   } catch (error) {
     // retorna Internal Server Error
-    return res.status(500).json({ msg: error.message });
+    console.log(error)
+
+    return res.status(450).json({ msg: error.message });
   }
 });
 
