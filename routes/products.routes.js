@@ -144,4 +144,29 @@ router.delete("/delete/:id", isAuth, attachCurrentUser, async (req, res) => {
   }
 });
 
+router.patch('/input-product', isAuth, attachCurrentUser, async (req, res) => {
+  try {
+    const productSent = await ProductsModel.findById(req.body._id)
+
+    const productToUpdate = await ProductsModel.findOneAndUpdate({ _id: req.body._id }, { $set: { quantity: (req.body.quantity + productSent.quantity) } }, { new: true })
+
+    return res.status(200).json(productToUpdate)
+  } catch (error) {
+    return res.status(400).json({ msg: error.message });
+  }
+})
+
+router.patch('/output-product', isAuth, attachCurrentUser, async (req, res) => {
+  try {
+    const productSent = await ProductsModel.findById(req.body._id)
+
+    const productToUpdate = await ProductsModel.findOneAndUpdate({ _id: req.body._id }, { $set: { quantity: (req.body.quantity - productSent.quantity) } }, { new: true })
+
+    return res.status(200).json(productToUpdate)
+  } catch (error) {
+    return res.status(400).json({ msg: error.message });
+  }
+})
+
+
 module.exports = router;
