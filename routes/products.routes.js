@@ -5,7 +5,6 @@ const router = express.Router();
 
 const ProductsModel = require("../models/Products.model");
 const BusinessModel = require("../models/Business.model");
-const LogModel = require("../models/LogModel.model");
 
 const isAuth = require("../middlewares/isAuth");
 const attachCurrentUser = require("../middlewares/attachCurrentUser");
