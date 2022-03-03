@@ -25,7 +25,7 @@ router.post("/create-business", isAuth, attachCurrentUser, async (req, res) => {
     });
 
     // Atualiza o role do user no momento da criação do business
-    updateRole = await userModel.findOneAndUpdate(
+    await userModel.findOneAndUpdate(
       { _id: loggedUser._id },
       { role: "ADMIN" }
     );
@@ -59,9 +59,9 @@ router.get("/profile", isAuth, attachCurrentUser, async (req, res) => {
       return res.status(404).json({ msg: "User or Business is disable." });
     }
 
-    const business = await BusinessModel.findById(loggedUser.business).populate(
-      "owner"
-    );
+    const business = await BusinessModel.findById(loggedUser.business)
+      .populate("owner")
+      .populate("products");
 
     // Deleta o password e a versão no retorno da atualização
     delete business.owner._doc.passwordHash;

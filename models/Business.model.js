@@ -75,7 +75,7 @@ const BusinessSchema = new Schema({
 
   employee: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
 
-  products: [{ type: mongoose.Schema.Types.ObjectId, ref: "Products" }],
+  products: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],
 
   businessIsActive: { type: Boolean, default: true },
 });
