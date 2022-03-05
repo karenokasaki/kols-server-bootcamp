@@ -9,8 +9,6 @@ const express = require("express");
 const router = express.Router();
 // import userModel schema
 const userModel = require("../models/User.model");
-const { hash } = require("bcrypt");
-const { route } = require("./users.routes");
 
 // config do nodemailer para envio de e-mail
 const transporter = nodemailer.createTransport({
