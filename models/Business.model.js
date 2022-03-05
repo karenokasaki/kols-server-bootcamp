@@ -71,6 +71,8 @@ const BusinessSchema = new Schema({
     },
   }),
 
+  img: { type: String, default: "logo da empresa", required: true },
+
   owner: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
 
   employee: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],

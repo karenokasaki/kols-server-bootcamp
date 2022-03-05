@@ -25,7 +25,7 @@ router.post(
 
     // Verifica se há um arquivo na request
     if (!req.file) {
-      return res.status(500).json({ message: "Upload falhou" });
+      return res.status(500).json({ message: "Upload failed" });
     }
 
     return res.status(201).json({ url: req.file.path });
