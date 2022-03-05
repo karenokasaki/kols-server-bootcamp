@@ -41,8 +41,9 @@ router.post("/create-product", isAuth, attachCurrentUser, async (req, res) => {
 });
 
 // Rota para buscar todos os produtos
-router.get("/all-products", isAuth, attachCurrentUser, async (req, res) => {
+router.get("/:idBusiness", isAuth, attachCurrentUser, async (req, res) => {
   try {
+    const { idBusiness } = req.params
     const loggedUser = req.currentUser;
 
     // Verifica se a conta do usuário está ativa.
@@ -51,11 +52,11 @@ router.get("/all-products", isAuth, attachCurrentUser, async (req, res) => {
     }
 
     // Seleciona o ID do business
-    const businessId = await BusinessModel.findOne({
-      _id: loggedUser.business,
+    const businessLogged = await BusinessModel.findOne({
+      _id: idBusiness,
     });
 
-    const products = await ProductsModel.find();
+    const products = await ProductsModel.find({ business: businessLogged._id });
 
     return res.status(200).json(products);
   } catch (error) {
