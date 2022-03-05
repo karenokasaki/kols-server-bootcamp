@@ -18,8 +18,8 @@ app.use("/products", productsRouter);
 const uploadRouter = require("./routes/upload.routes");
 app.use("/upload", uploadRouter);
 
-const resetPasswordRouter = require("./routes/resetPassword.routes");
-app.use("/resetPassword", resetPasswordRouter);
+const resetPasswordRouter = require("./routes/resetpassword.routes");
+app.use("/resetpassword", resetPasswordRouter);
 
 app.listen(Number(process.env.PORT) || 3000, () => {
   console.log(`Server up and ruining at - port: ${process.env.PORT}`);
