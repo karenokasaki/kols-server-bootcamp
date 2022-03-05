@@ -10,6 +10,7 @@ const router = express.Router();
 // import userModel schema
 const userModel = require("../models/User.model");
 const { hash } = require("bcrypt");
+const { route } = require("./users.routes");
 
 // config do nodemailer para envio de e-mail
 const transporter = nodemailer.createTransport({
@@ -131,3 +132,5 @@ router.put("/reset-password/:token", async (req, res) => {
     return res.status(500).json({ msg: error.message });
   }
 });
+
+module.exports = router;
