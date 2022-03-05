@@ -46,14 +46,14 @@ router.post("/create-business", isAuth, attachCurrentUser, async (req, res) => {
 });
 
 // Rota para buscar uma empresa
-router.get("/profile", isAuth, attachCurrentUser, async (req, res) => {
+router.get("/profile/:id", isAuth, attachCurrentUser, async (req, res) => {
+  const { id } = req.params;
+
   try {
     const loggedUser = req.currentUser;
 
     // Verifica se a conta do usuário e empresa está ativa.
-    const businessCheck = await BusinessModel.findOne({
-      _id: loggedUser.business,
-    });
+    const businessCheck = await BusinessModel.findById(id);
 
     if (!loggedUser.userIsActive || !businessCheck.businessIsActive) {
       return res.status(404).json({ msg: "User or Business is disable." });
