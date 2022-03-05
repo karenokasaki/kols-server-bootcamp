@@ -51,12 +51,7 @@ router.get("/:idBusiness", isAuth, attachCurrentUser, async (req, res) => {
       return res.status(404).json({ msg: "User disable account." });
     }
 
-    // Seleciona o ID do business
-    const businessLogged = await BusinessModel.findOne({
-      _id: idBusiness,
-    });
-
-    const products = await ProductsModel.find({ business: businessLogged._id });
+    const products = await ProductsModel.find({ business: idBusiness });
 
     return res.status(200).json(products);
   } catch (error) {
