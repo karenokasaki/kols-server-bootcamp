@@ -102,15 +102,16 @@ router.patch("/update/:id", isAuth, attachCurrentUser, async (req, res) => {
 // Rota para um soft delete da empresa
 // Verifica se o usuário esta logado, identifica o ID do business e "deleta" do banco de dados.
 router.delete(
-  "/profile/disable-business",
+  "/:idBusiness/disable-business",
   isAuth,
   attachCurrentUser,
   async (req, res) => {
     try {
+      const { idBusiness } = req.params
       const loggedUser = req.currentUser;
 
       const disableBusiness = await BusinessModel.findOneAndUpdate(
-        { _id: loggedUser.business },
+        { _id: idBusiness },
         { businessIsActive: false },
         { new: true }
       );
@@ -122,17 +123,21 @@ router.delete(
   }
 );
 
+
+http://localhost:4000/business/6222f4b84a3b40933c2acce3/active-business
 // Rota active business
 router.patch(
-  "/profile/active-business",
+  "/:idBusinessDisable/active-business",
   isAuth,
   attachCurrentUser,
   async (req, res) => {
     try {
+      const { idBusinessDisable } = req.params
       const loggedUser = req.currentUser;
+      console.log(idBusinessDisable)
 
       const activeBusiness = await BusinessModel.findOneAndUpdate(
-        { _id: loggedUser.business },
+        { _id: idBusinessDisable },
         { businessIsActive: true },
         { new: true }
       );
