@@ -110,6 +110,7 @@ const UserSchema = new Schema({
   business: [{ type: mongoose.Schema.Types.ObjectId, ref: "Business" }],
 
   passwordHash: { type: String /* required: true */ },
+  resetPassword: { type: String, default: "" },
 
   ownership: { type: mongoose.Schema.Types.ObjectId, ref: "Business" },
   employee: { type: mongoose.Schema.Types.ObjectId, ref: "Business" },

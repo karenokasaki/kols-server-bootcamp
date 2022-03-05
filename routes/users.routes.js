@@ -2,16 +2,17 @@
 const express = require("express");
 // instanciar as rotas pegando do express
 const router = express.Router();
-// Import middleware para validação
+// Import middleware para validação de usuário
 const isAuth = require("../middlewares/isAuth");
 const attachCurrentUser = require("../middlewares/attachCurrentUser");
-// Import Bcrypt para criptografia da senha
+// Import Bcrypt para criptografia da senha e reset password
 const bcrypt = require("bcrypt");
 // Import generateToken para gerar o Token de acesso e timeout
 const generateToken = require("../config/jwt.config");
-
+// Import model schema user
 const userModel = require("../models/User.model");
 
+// Define a quantidade de "saltos que serão adicionados a criptografia da senha"
 const saltRounds = 10;
 
 // Rota para criar um novo usuário
@@ -47,7 +48,7 @@ router.post("/create-user", async (req, res) => {
     return res.status(201).json(newUser._doc);
   } catch (error) {
     // retorna Internal Server Error
-    console.log(error)
+    console.log(error);
 
     return res.status(450).json({ msg: error.message });
   }
