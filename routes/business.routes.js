@@ -5,6 +5,7 @@ const router = express.Router();
 
 const BusinessModel = require("../models/Business.model");
 const userModel = require("../models/User.model");
+const logModel = require("../models/Log.model");
 
 const isAuth = require("../middlewares/isAuth");
 const attachCurrentUser = require("../middlewares/attachCurrentUser");
@@ -77,7 +78,7 @@ router.get("/profile/:id", isAuth, attachCurrentUser, async (req, res) => {
 // Rota para atualizar empresa
 router.patch("/update/:id", isAuth, attachCurrentUser, async (req, res) => {
   try {
-    const { id } = req.params
+    const { id } = req.params;
     const loggedUser = req.currentUser;
 
     // Verifica se a conta do usuário e empresa está ativa.
@@ -107,7 +108,7 @@ router.delete(
   attachCurrentUser,
   async (req, res) => {
     try {
-      const { idBusiness } = req.params
+      const { idBusiness } = req.params;
       const loggedUser = req.currentUser;
 
       const disableBusiness = await BusinessModel.findOneAndUpdate(
@@ -123,8 +124,6 @@ router.delete(
   }
 );
 
-
-http://localhost:4000/business/6222f4b84a3b40933c2acce3/active-business
 // Rota active business
 router.patch(
   "/:idBusinessDisable/active-business",
@@ -132,9 +131,9 @@ router.patch(
   attachCurrentUser,
   async (req, res) => {
     try {
-      const { idBusinessDisable } = req.params
+      const { idBusinessDisable } = req.params;
       const loggedUser = req.currentUser;
-      console.log(idBusinessDisable)
+      console.log(idBusinessDisable);
 
       const activeBusiness = await BusinessModel.findOneAndUpdate(
         { _id: idBusinessDisable },
@@ -148,4 +147,26 @@ router.patch(
     }
   }
 );
+
+// Rota Get de Log
+router.get("/:idBusiness/log", isAuth, attachCurrentUser, async (req, res) => {
+  try {
+    const { idBusiness } = req.params;
+    const loggedUser = req.currentUser;
+
+    // Verifica se a conta do usuário e empresa está ativa.
+    const businessCheck = await BusinessModel.findById(idBusiness);
+
+    if (!loggedUser.userIsActive || !businessCheck.businessIsActive) {
+      return res.status(404).json({ msg: "User or Business is disable." });
+    }
+
+    const log = await logModel.find({ business: idBusiness });
+
+    return res.status(200).json(log);
+  } catch (error) {
+    return res.status(500).json({ msg: error.message });
+  }
+});
+
 module.exports = router;

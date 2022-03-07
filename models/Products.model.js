@@ -1,9 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-/* require('mongoose-currency').loadType(mongoose);
-const Currency = mongoose.Types.Currency; */
-
 const ProductSchema = new Schema({
   name: { type: String, required: true },
   desc: { type: String, required: true },
