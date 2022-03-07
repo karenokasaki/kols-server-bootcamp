@@ -130,4 +130,37 @@ router.put("/new-password/:token", async (req, res) => {
   }
 });
 
+// Rota buscar token válido
+router.get("/valid-token/:token", async (req, res) => {
+  try {
+    // Verifica a existência do token
+    if (!req.params.token) {
+      return res.status(400).json({ msg: "Incorrect or invalid Token" });
+    }
+
+    // Verifica se o token é válido e não esta expirado
+    jwt.verify(
+      req.params.token,
+      process.env.SIGN_SECRET_RESET_PASSWORD,
+      err => {
+        if (err) {
+          return res.status(400).json({ msg: "Incorrect or invalid Token" });
+        }
+      }
+    );
+
+    // Busca o usuário pelo token de recuperação
+    let user = await userModel.findOne({ resetPassword: req.params.token });
+
+    // Verifica se o usuário existe baseado no token
+    if (!user) {
+      return res.status(404).json({ msg: false });
+    }
+
+    return res.status(200).json({ msg: true });
+  } catch (error) {
+    return res.status(500).json({ msg: error.message });
+  }
+});
+
 module.exports = router;
