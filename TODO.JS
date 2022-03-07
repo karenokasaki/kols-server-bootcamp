@@ -1,8 +1,13 @@
 //! APAGAR O ARQUIVO ASSIM QUE FINALIZADO
 
+// TODO: ALL
+//* Modulo de data para JS
+//* Modulo de Grana
+
 // TODO: ROTAS USER
 
 // TODO: ROTAS BUSINESS
-criar um bunisses dentro do usuário
 
 // TODO: ROTAS PRODUCTS
+
+// TODO: LOG

@@ -8,6 +8,8 @@ const BusinessModel = require("../models/Business.model");
 
 const isAuth = require("../middlewares/isAuth");
 const attachCurrentUser = require("../middlewares/attachCurrentUser");
+const LogModel = require("../models/Log.model");
+const UserModel = require("../models/User.model");
 
 // Rota para criar um produto
 router.post("/:idBusiness/create-product", isAuth, attachCurrentUser, async (req, res) => {
@@ -39,7 +41,7 @@ router.post("/:idBusiness/create-product", isAuth, attachCurrentUser, async (req
 // Rota para buscar todos os produtos
 router.get("/:idBusiness", isAuth, attachCurrentUser, async (req, res) => {
   try {
-    const { idBusiness } = req.params
+    const { idBusiness } = req.params;
     const loggedUser = req.currentUser;
 
     // Verifica se a conta do usuário está ativa.
@@ -137,35 +139,64 @@ router.delete("/delete/:id", isAuth, attachCurrentUser, async (req, res) => {
 });
 
 //adiciona na quantidade do produto no BD
-router.patch('/input-product', isAuth, attachCurrentUser, async (req, res) => {
+router.patch("/input-product", isAuth, attachCurrentUser, async (req, res) => {
   try {
-    const productSent = await ProductsModel.findById(req.body._id)
+    const loggedUser = req.currentUser;
 
-    const productToUpdate = await ProductsModel.findOneAndUpdate({ _id: req.body._id }, { $set: { quantity: (req.body.quantity + productSent.quantity) } }, { new: true })
+    const productSent = await ProductsModel.findById(req.body._id);
 
-    return res.status(200).json(productToUpdate)
+    const productToUpdate = await ProductsModel.findOneAndUpdate(
+      { _id: req.body._id },
+      { $set: { quantity: req.body.quantity + productSent.quantity } },
+      { new: true }
+    );
+
+    await LogModel.create({
+      userName: loggedUser._id,
+      nameProduct: productSent._id,
+      business: productToUpdate.business,
+      quantityInput: req.body.quantity,
+      purchasePrice: req.body.purchasePrice,
+    });
+
+    return res.status(200).json(productToUpdate);
   } catch (error) {
     return res.status(400).json({ msg: error.message });
   }
-})
+});
 
 //subtrai na quantidade do produto no BD
-router.patch('/output-product', isAuth, attachCurrentUser, async (req, res) => {
+router.patch("/output-product", isAuth, attachCurrentUser, async (req, res) => {
   try {
-    const productSent = await ProductsModel.findById(req.body._id)
+    const loggedUser = req.currentUser;
+
+    const productSent = await ProductsModel.findById(req.body._id);
 
     //verifica se o estoque não vai ficar negativo depois da subtração
     if (productSent.quantity - req.body.quantity < 0) {
-      return res.status(400).json('Estoque indisponível')
+      return res.status(400).json("Estoque indisponível");
     }
 
-    const productToUpdate = await ProductsModel.findOneAndUpdate({ _id: req.body._id }, { $set: { quantity: (productSent.quantity - req.body.quantity) } }, { new: true })
+    const productToUpdate = await ProductsModel.findOneAndUpdate(
+      { _id: req.body._id },
+      { $set: { quantity: productSent.quantity - req.body.quantity } },
+      { new: true }
+    );
 
-    return res.status(200).json(productToUpdate)
+    const log = await LogModel.create({
+      userName: loggedUser._id,
+      nameProduct: productSent._id,
+      business: productToUpdate.business,
+      quantityOutput: req.body.quantity,
+      salePrice: req.body.salePrice,
+    });
+
+    console.log(log);
+
+    return res.status(200).json(productToUpdate);
   } catch (error) {
     return res.status(400).json({ msg: error.message });
   }
-})
-
+});
 
 module.exports = router;
