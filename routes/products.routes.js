@@ -10,8 +10,9 @@ const isAuth = require("../middlewares/isAuth");
 const attachCurrentUser = require("../middlewares/attachCurrentUser");
 
 // Rota para criar um produto
-router.post("/create-product", isAuth, attachCurrentUser, async (req, res) => {
+router.post("/:idBusiness/create-product", isAuth, attachCurrentUser, async (req, res) => {
   try {
+    const { idBusiness } = req.params
     const loggedUser = req.currentUser;
 
     // Verifica se a conta do usuário está ativa.
@@ -19,18 +20,13 @@ router.post("/create-product", isAuth, attachCurrentUser, async (req, res) => {
       return res.status(404).json({ msg: "User disable account." });
     }
 
-    // Seleciona o ID do business
-    const businessId = await BusinessModel.findOne({
-      _id: loggedUser.business,
-    });
-
     const newProduct = await ProductsModel.create({
       ...req.body,
-      business: businessId._id,
+      business: idBusiness,
     });
 
     await BusinessModel.findOneAndUpdate(
-      { _id: businessId._id },
+      { _id: idBusiness },
       { $push: { products: newProduct._id } }
     );
 
