@@ -54,7 +54,7 @@ router.post("/forgot-password", async (req, res) => {
       from: "contato.kols@gmail.com",
       to: user.email,
       subject: "Redefinir Senha",
-      html: `<p>Clique no link para redefinir sua senha:<p> <a href=https://kols-client-n655pmdk6-jotavkf.vercel.app/resetPassword/new-password/${temporaryToken}>LINK</a>`,
+      html: `<p>Clique no link para redefinir sua senha:<p> <a href=https://kols-client.vercel.app/login/reset-password/${temporaryToken}>LINK</a>`,
     };
 
     // Dispara e-mail para o usuário
