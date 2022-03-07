@@ -23,7 +23,7 @@ const transporter = nodemailer.createTransport({
 const saltRounds = 10;
 
 // Rota de recuperação de senha que recebe o email do usuário solicitante
-router.post("/login/forgot-password", async (req, res) => {
+router.post("/forgot-password", async (req, res) => {
   try {
     // Extrai o e-mail da requisição
     const { email } = req.body;
@@ -43,7 +43,7 @@ router.post("/login/forgot-password", async (req, res) => {
       { expiresIn: "20m" }
     );
 
-    // Set do resetPassword userModel
+    // Define o token temporário no resetPassword
     await userModel.findOneAndUpdate(
       { _id: user._id },
       { $set: { resetPassword: temporaryToken } }
@@ -54,7 +54,7 @@ router.post("/login/forgot-password", async (req, res) => {
       from: "contato.kols@gmail.com",
       to: user.email,
       subject: "Redefinir Senha",
-      html: `<p>Clique no link para redefinir sua senha:<p> <a href=https://kols-client-n655pmdk6-jotavkf.vercel.app/login/forgot-password/${temporaryToken}>LINK</a>`,
+      html: `<p>Clique no link para redefinir sua senha:<p> <a href=https://kols-client-n655pmdk6-jotavkf.vercel.app/resetPassword/new-password/${temporaryToken}>LINK</a>`,
     };
 
     // Dispara e-mail para o usuário
@@ -71,14 +71,14 @@ router.post("/login/forgot-password", async (req, res) => {
 });
 
 // Rota de atualização da senha e banco
-router.put("/reset-password/:token", async (req, res) => {
+router.put("/new-password/:token", async (req, res) => {
   try {
     // Verifica a existência do token
     if (!req.params.token) {
       return res.status(400).json({ msg: "Incorrect or invalid Token" });
     }
 
-    // Verifica se o token é válido e não esta espirado
+    // Verifica se o token é válido e não esta expirado
     jwt.verify(
       req.params.token,
       process.env.SIGN_SECRET_RESET_PASSWORD,
@@ -92,7 +92,7 @@ router.put("/reset-password/:token", async (req, res) => {
     // Busca o usuário pelo token de recuperação
     let user = await userModel.findOne({ resetPassword: req.params.token });
 
-    // Verifica se  o usuário existe
+    // Verifica se o token do usuário existe
     if (!user) {
       return res.status(400).json({ msg: "Incorrect or invalid Token" });
     }
@@ -118,14 +118,13 @@ router.put("/reset-password/:token", async (req, res) => {
     // Criptografa a senha
     const hashedPassword = await bcrypt.hash(newPassword, salt);
 
+    // Encontra o usuário pelo ID, define a nova senha e redefine o token temporário.
     await userModel.findOneAndUpdate(
       { _id: user._id },
       { $set: { passwordHash: hashedPassword, resetPassword: "" } }
     );
 
     return res.status(200).json({ msg: "Password Updated!" });
-
-    // Verifica se o usuário
   } catch (error) {
     return res.status(500).json({ msg: error.message });
   }
