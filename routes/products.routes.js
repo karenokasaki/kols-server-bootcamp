@@ -191,8 +191,6 @@ router.patch("/output-product", isAuth, attachCurrentUser, async (req, res) => {
       salePrice: req.body.salePrice,
     });
 
-    console.log(log);
-
     return res.status(200).json(productToUpdate);
   } catch (error) {
     return res.status(400).json({ msg: error.message });

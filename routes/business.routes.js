@@ -133,7 +133,6 @@ router.patch(
     try {
       const { idBusinessDisable } = req.params;
       const loggedUser = req.currentUser;
-      console.log(idBusinessDisable);
 
       const activeBusiness = await BusinessModel.findOneAndUpdate(
         { _id: idBusinessDisable },
