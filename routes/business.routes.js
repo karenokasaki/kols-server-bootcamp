@@ -42,6 +42,7 @@ router.post("/create-business", isAuth, attachCurrentUser, async (req, res) => {
     return res.status(201).json(newBusiness);
   } catch (error) {
     // retorna Internal Server Error
+    console.log(error)
     return res.status(500).json({ msg: error.message });
   }
 });
@@ -59,7 +60,7 @@ router.get("/profile/:id", isAuth, attachCurrentUser, async (req, res) => {
       return res.status(404).json({ msg: "User or Business is disable." });
     }
 
-    const business = await BusinessModel.findById(loggedUser.business)
+    const business = await BusinessModel.findById(id)
       .populate("owner")
       .populate("products");
 
@@ -160,7 +161,7 @@ router.get("/:idBusiness/log", isAuth, attachCurrentUser, async (req, res) => {
       return res.status(404).json({ msg: "User or Business is disable." });
     }
 
-    const log = await logModel.find({ business: idBusiness });
+    const log = await logModel.find({ business: idBusiness }).populate('nameProduct').populate('userName');
 
     return res.status(200).json(log);
   } catch (error) {
