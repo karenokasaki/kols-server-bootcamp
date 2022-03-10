@@ -1,5 +1,5 @@
 # KOLS SERVER #1
-Back-end for inventory control app (**mobile** and **web**)!
+Back-end project for inventory control app (**mobile** and **web**)!
 
 # About the project
 This project has been created in the third module at Ironhack São Paulo - Web Development Bootcamp.
