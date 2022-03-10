@@ -10,7 +10,7 @@ const ProductSchema = new Schema({
   purchasePrice: { type: Number, required: true },
   salePrice: { type: Number, required: true },
   supplier: { type: String, required: true },
-  resupplyPoint: { type: String, required: true },
+  resupplyPoint: { type: Number, required: true },
   productImg: { type: String, default: "logo da empresa", required: true },
   business: {
     type: mongoose.Schema.Types.ObjectId,
