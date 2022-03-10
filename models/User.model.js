@@ -10,19 +10,19 @@ const UserSchema = new Schema({
     unique: true,
     trim: true,
     lowercase: true,
-    match: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+    /* match: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, */
   },
   birthdate: { type: Date, required: true },
   cpf: {
-    type: Number,
+    type: String,
     required: true,
     unique: true,
-    match: /^\d{3}.\d{3}.\d{3}-\d{2}$/,
+    /* match: /^\d{3}.\d{3}.\d{3}-\d{2}$/, */
   },
   rg: {
-    type: Number,
+    type: String,
     required: true,
-    match: /(\d{1,2}.?)(\d{3}.?)(\d{3})(-?[0-9Xx]{1})/,
+    /* match: /(\d{1,2}.?)(\d{3}.?)(\d{3})(-?[0-9Xx]{1})/, */
   },
   rgUF: {
     type: String,
@@ -58,9 +58,9 @@ const UserSchema = new Schema({
     required: true,
   },
   phone: {
-    type: Number,
+    type: String,
     required: true,
-    match: /(^[0-9]{2})?(\s|-)?(9?[0-9]{4})-?([0-9]{4}$)/,
+    /* match: /(^[0-9]{2})?(\s|-)?(9?[0-9]{4})-?([0-9]{4}$)/, */
   },
   address: new Schema({
     street: { type: String, required: true },
@@ -68,9 +68,9 @@ const UserSchema = new Schema({
     district: { type: String, required: true },
     city: { type: String, required: true },
     zipcode: {
-      type: Number,
+      type: String,
       required: true,
-      match: /^([\d]{2}).?([\d]{3})-?([\d]{3})/,
+      /* match: /^([\d]{5})-?([\d]{3})/, */
     },
     state: {
       type: String,
