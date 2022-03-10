@@ -126,3 +126,12 @@ Complete CRUD functionality
 Front-end for inventory control app (**mobile** and **web**)!
 
 [Click here](https://github.com/jotavkf/kols-client)
+
+## Install
+To run the application on your localhost, clone the repo and then execute the commands below:
+
+**Note: Don't forget to create .env and update like exemple.env**
+
+- <code>$ git clone https://github.com/karenokasaki/kols-server</code>
+- <code>$ cd kols-server npm install</code>
+- <code>$ npm run start</code>
