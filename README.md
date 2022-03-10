@@ -1,7 +1,9 @@
 # KOLS SERVER #1
+
 Back-end project for inventory control app (**mobile** and **web**)!
 
 # About the project
+
 This project has been created in the third module at Ironhack São Paulo - Web Development Bootcamp.
 
 Simple REST API to allow for complete CRUD  at the endpoint:
@@ -10,6 +12,7 @@ https://kols-server.herokuapp.com
 **Caution: Exclusive use for Kols-Client**
 
 # Usage
+
 Complete CRUD functionality
 
 ## User Routes
@@ -25,12 +28,15 @@ Complete CRUD functionality
 **Get Current User**
 
     GET /users/profile
+    
 **Update Account**
 
     PATCH /users/profile/update
+    
 **Delete Account**
 
     DELETE /users/profile/disable-account
+    
 **Active Account**
 
     PATCH /users/profile/active-account
@@ -108,3 +114,8 @@ Complete CRUD functionality
 **Send Image**
 
     POST /upload/image
+    
+# Developers GitHub
+- [João Vítor Ferraz](https://github.com/jotavkf)
+- [Karen Okasaki](https://github.com/karenokasaki)
+- [Leonardo Santini](https://github.com/LeoSantini)
