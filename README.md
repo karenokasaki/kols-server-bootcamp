@@ -116,6 +116,13 @@ Complete CRUD functionality
     POST /upload/image
     
 # Developers GitHub
+
 - [João Vítor Ferraz](https://github.com/jotavkf)
 - [Karen Okasaki](https://github.com/karenokasaki)
 - [Leonardo Santini](https://github.com/LeoSantini)
+
+# KOLS CLIENT
+
+Front-end for inventory control app (**mobile** and **web**)!
+
+[Click here](https://github.com/jotavkf/kols-client)
