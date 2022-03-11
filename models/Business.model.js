@@ -28,7 +28,7 @@ const BusinessSchema = new Schema({
 
   address: new Schema({
     street: { type: String, required: true },
-    String: { type: String, required: true },
+    number: { type: String, required: true },
     district: { type: String, required: true },
     city: { type: String, required: true },
     zipcode: {
