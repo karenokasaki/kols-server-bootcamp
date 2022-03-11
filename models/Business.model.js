@@ -6,35 +6,35 @@ const BusinessSchema = new Schema({
   name: { type: String, required: true },
   cnpj: {
     type: String,
-    match: /^\d{2}.\d{3}.\d{3}\/\d{4}-\d{2}$/,
+    /* match: /^\d{2}.\d{3}.\d{3}\/\d{4}-\d{2}$/, */
     required: true,
   },
-  ie: { type: String, match: /^\d{3}.\d{3}.\d{3}.\d{3}$/ },
-  im: { type: String, match: /^\d{7}\/\d{3}?-\d{1}$/ },
+  ie: { type: String, /* match: /^\d{3}.\d{3}.\d{3}.\d{3}$/ */ },
+  im: { type: String, /* match: /^\d{7}\/\d{3}?-\d{1}$/ */ },
   email: {
     type: String,
     required: true,
     unique: true,
     trim: true,
     lowercase: true,
-    match: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+    /* match: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, */
   },
   phone: {
-    type: Number,
+    type: String,
     required: true,
-    match: /(^[0-9]{2})?(\s|-)?(9?[0-9]{4})-?([0-9]{4}$)/,
+    /* match: /(^[0-9]{2})?(\s|-)?(9?[0-9]{4})-?([0-9]{4}$)/, */
     required: true,
   },
 
   address: new Schema({
     street: { type: String, required: true },
-    number: { type: Number, required: true },
+    String: { type: String, required: true },
     district: { type: String, required: true },
     city: { type: String, required: true },
     zipcode: {
-      type: Number,
+      type: String,
       required: true,
-      match: /^([\d]{2}).?([\d]{3})-?([\d]{3})$/,
+      /* match: /^([\d]{2}).?([\d]{3})-?([\d]{3})$/, */
     },
     state: {
       type: String,
