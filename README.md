@@ -127,6 +127,10 @@ Front-end for inventory control app (**mobile** and **web**)!
 
 [Click here](https://github.com/jotavkf/kols-client)
 
+# Presentation
+
+[Click here](https://www.canva.com/design/DAE6l1qSFZI/xZhufOFHCylg5A8tYSolLw/view?utm_content=DAE6l1qSFZI&utm_campaign=designshare&utm_medium=link&utm_source=sharebutton)
+
 ## Install
 To run the application on your localhost, clone the repo and then execute the commands below:
 
